@@ -13,8 +13,7 @@ KanjiRouter.get('/kanjis', async (req, res) => {
   let rand = req.query.random ? eval(req.query.random) : false;
 
   if (limit > 0 && rand) {
-    let randLimit = limit > 0 ? limit : 10;
-    kanjis =  await DB.collection('kanjis').aggregate([{$sample: {size: randLimit}}]).toArray();
+    kanjis =  await DB.collection('kanjis').aggregate([{$sample: {size: limit}}]).toArray();
   } else {
     let request = DB.collection('kanjis').find(query);
     if (page >= 1) request.skip(page * limit);
@@ -36,8 +35,7 @@ KanjiRouter.get('/kanjis/level/:level', async (req, res) => {
   let rand = req.query.random ? eval(req.query.random) : false;
 
   if (limit > 0 && rand) {
-    let randLimit = limit > 0 ? limit : 10;
-    kanjis =  await DB.collection('kanjis').aggregate([{$match: query}, {$sample: {size: randLimit}}]).toArray();
+    kanjis =  await DB.collection('kanjis').aggregate([{$match: query}, {$sample: {size: limit}}]).toArray();
   } else {
     let request = DB.collection('kanjis').find(query);
     if (page >= 1) request.skip(page * limit);
