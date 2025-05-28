@@ -5,10 +5,10 @@ export class SocketManager {
     
   constructor(server) {
     this.io = new Server(server, {
-        cors: {
-            origin: process.env.DOMAINS.split(','),
-            methods: ['GET', 'POST', 'OPTIONS']
-        }
+      cors: {
+        origin: process.env.DOMAINS.split(','),
+        methods: ['GET', 'POST', 'OPTIONS']
+      }
     });
     this.instances = {};
     this.childrens = {};
