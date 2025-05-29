@@ -1,4 +1,4 @@
-export const GetDrawingKanjis = async (width, height, strokes, device) => {
+export const GetDrawingResults = async (width, height, strokes, device) => {
   const resp = await fetch(`https://inputtools.google.com/request?itc=ja-t-i0-handwrit&app=jsapi`, {
     method: 'POST',
     body: JSON.stringify({

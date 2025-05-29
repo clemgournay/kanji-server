@@ -1,5 +1,5 @@
 import { Server } from 'socket.io';
-import { GetDrawingKanjis } from '../includes/drawing.js';
+import { GetDrawingResults } from '../includes/drawing.js';
 
 export class SocketManager {
     
@@ -28,12 +28,10 @@ export class SocketManager {
       switch (mode) {
         case 'app':
 
-          socket.on('new kanji', (kanji) => {
-            console.log('NEW KANJI', kanji);
+          socket.on('new character', (character) => {
             this.instances[socket.id] = {kanji};
             if (this.childrens[socket.id]) {
-              console.log('CLEAR');
-              this.io.to(this.childrens[socket.id]).emit('new kanji');
+              this.io.to(this.childrens[socket.id]).emit('new character');
             } 
           });
 
@@ -43,9 +41,9 @@ export class SocketManager {
           this.childrens[parentID] = socket.id;
 
           socket.on('send drawing', async (data) => {
-            const kanji = this.instances[parentID].kanji;
-            const kanjis = await GetDrawingKanjis(data.width, data.height, data.strokes, data.device);
-            const result = (kanji && kanji.symbol === kanjis[0]);
+            const character = this.instances[parentID].character;
+            const characters = await GetDrawingResults(data.width, data.height, data.strokes, data.device);
+            const result = character && (character.symbol === characters[0]);
             this.io.to(parentID).emit('receive result', result);
           });
           break;

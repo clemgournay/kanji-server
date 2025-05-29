@@ -1,34 +1,34 @@
 import express from 'express';
 import { DB } from '../database.js';
 
-export const KanjiRouter = express.Router();
+export const KanaRouter = express.Router();
 
-KanjiRouter.get('/kanjis', async (req, res) => {
+KanaRouter.get('/kanas', async (req, res) => {
   const query = {};
 
-  let kanjis = [];
+  let kanas = [];
 
   let page = req.query.page ? parseInt(req.query.page) : 1;
   let limit = req.query.limit ? parseInt(req.query.limit) : 0;
   let rand = req.query.random ? eval(req.query.random) : false;
 
   if (limit > 0 && rand) {
-    kanjis =  await DB.collection('kanjis').aggregate([{$sample: {size: limit}}]).toArray();
+    kanas =  await DB.collection('kanas').aggregate([{$sample: {size: limit}}]).toArray();
   } else {
-    let request = DB.collection('kanjis').find(query);
+    let request = DB.collection('kanas').find(query);
     if (page >= 1) request.skip(page * limit);
     if (limit > 0) request.limit(limit);
-    kanjis = await request.toArray();
+    kanas = await request.toArray();
   }
-  console.log(kanjis);
-  res.json({data: kanjis, count: kanjis.length});
+  console.log(kanas);
+  res.json({data: kanas, count: kanas.length});
 });
 
-KanjiRouter.get('/kanjis/level/:level', async (req, res) => {
+KanasRouter.get('/kanas/category/:category', async (req, res) => {
   const query = {};
-  query.level = req.params.level;
+  query.category = req.params.category;
 
-  let kanjis = [];
+  let kanas = [];
 
   let page = req.query.page ? parseInt(req.query.page) : 1;
   let limit = req.query.limit ? parseInt(req.query.limit) : 0;
@@ -36,12 +36,12 @@ KanjiRouter.get('/kanjis/level/:level', async (req, res) => {
   console.log(limit)
 
   if (limit > 0 && rand) {
-    kanjis =  await DB.collection('kanjis').aggregate([{$match: query}, {$sample: {size: limit}}]).toArray();
+    kanas =  await DB.collection('kanas').aggregate([{$match: query}, {$sample: {size: limit}}]).toArray();
   } else {
-    let request = DB.collection('kanjis').find(query);
+    let request = DB.collection('kanas').find(query);
     if (page >= 1) request.skip(page * limit);
     if (limit > 0) request.limit(limit);
-    kanjis = await request.toArray();
+    kanas = await request.toArray();
   }
-  res.json({data: kanjis, count: kanjis.length});
+  res.json({data: kanas, count: kanas.length});
 });
