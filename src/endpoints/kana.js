@@ -12,6 +12,10 @@ KanaRouter.get('/kanas', async (req, res) => {
   let limit = req.query.limit ? parseInt(req.query.limit) : 0;
   let rand = req.query.random ? eval(req.query.random) : false;
 
+  if (req.query.type) query.type = req.query.type;
+
+  console.log(page * limit, limit, rand, query);
+
   if (limit > 0 && rand) {
     kanas =  await DB.collection('kanas').aggregate([{$sample: {size: limit}}]).toArray();
   } else {
@@ -27,6 +31,8 @@ KanaRouter.get('/kanas', async (req, res) => {
 KanaRouter.get('/kanas/category/:category', async (req, res) => {
   const query = {};
   query.category = req.params.category;
+
+  if (req.query.type) query.type = req.query.type;
 
   let kanas = [];
 
