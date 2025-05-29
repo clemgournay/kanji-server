@@ -24,9 +24,9 @@ KanjiRouter.get('/kanjis', async (req, res) => {
   res.json({data: kanjis, count: kanjis.length});
 });
 
-KanjiRouter.get('/kanjis/level/:level', async (req, res) => {
+KanjiRouter.get('/kanjis/category/:category', async (req, res) => {
   const query = {};
-  query.level = req.params.level;
+  query.category = req.params.category;
 
   let kanjis = [];
 
