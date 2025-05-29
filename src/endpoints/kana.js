@@ -20,7 +20,7 @@ KanaRouter.get('/kanas', async (req, res) => {
     kanas =  await DB.collection('kanas').aggregate([{$sample: {size: limit}}]).toArray();
   } else {
     let request = DB.collection('kanas').find(query);
-    if (page >= 1) request.skip(page * limit);
+    if (page > 1) request.skip(page * limit);
     if (limit > 0) request.limit(limit);
     kanas = await request.toArray();
   }
@@ -28,24 +28,24 @@ KanaRouter.get('/kanas', async (req, res) => {
   res.json({data: kanas, count: kanas.length});
 });
 
-KanaRouter.get('/kanas/category/:category', async (req, res) => {
+KanaRouter.get('/kanas/:type', async (req, res) => {
   const query = {};
-  query.category = req.params.category;
 
-  if (req.query.type) query.type = req.query.type;
+  if (req.params.type) query.type = req.params.type;
+  if (req.query.category) query.category = req.query.category;
 
   let kanas = [];
 
   let page = req.query.page ? parseInt(req.query.page) : 1;
   let limit = req.query.limit ? parseInt(req.query.limit) : 0;
   let rand = req.query.random ? eval(req.query.random) : false;
-  console.log(limit)
+  console.log(limit, rand, page * limit);
 
   if (limit > 0 && rand) {
     kanas =  await DB.collection('kanas').aggregate([{$match: query}, {$sample: {size: limit}}]).toArray();
   } else {
     let request = DB.collection('kanas').find(query);
-    if (page >= 1) request.skip(page * limit);
+    if (page > 1) request.skip(page * limit);
     if (limit > 0) request.limit(limit);
     kanas = await request.toArray();
   }
