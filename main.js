@@ -4,6 +4,7 @@ import cors from 'cors';
 
 import { dirname, resolve } from 'path';
 import { KanjiRouter } from './src/endpoints/kanji.js';
+import { KanaRouter } from './src/endpoints/kana.js';
 
 import { SocketManager } from './src/classes/socket-manager.js';
 
@@ -34,6 +35,7 @@ app.use(cors(corsOptions));
 app.use(express.static(__dirname + '/public'));
 app.use(express.json());
 app.use(KanjiRouter);
+app.use(KanaRouter);
 
 server.listen(process.env.PORT, () => {
   console.log(`listening on *: ${process.env.PORT}`);

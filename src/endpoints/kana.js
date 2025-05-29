@@ -24,7 +24,7 @@ KanaRouter.get('/kanas', async (req, res) => {
   res.json({data: kanas, count: kanas.length});
 });
 
-KanasRouter.get('/kanas/category/:category', async (req, res) => {
+KanaRouter.get('/kanas/category/:category', async (req, res) => {
   const query = {};
   query.category = req.params.category;
 
