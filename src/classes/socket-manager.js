@@ -29,7 +29,7 @@ export class SocketManager {
         case 'app':
 
           socket.on('new character', (character) => {
-            this.instances[socket.id] = {kanji};
+            this.instances[socket.id] = {character};
             if (this.childrens[socket.id]) {
               this.io.to(this.childrens[socket.id]).emit('new character');
             } 
